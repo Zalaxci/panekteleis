@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cool start page</title>
+	<meta charset="utf-8">
+  <link rel="icon" href="https://image.flaticon.com/icons/svg/1037/1037960.svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap"> 
+  <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+
+  <!-- Weather -->
+  <div id="weather-container">
+    <div id="sky"></div>
+    <h1 id="desc"></h1>
+    <h3 id="temp"></h3>
+    <p id="loc" class="center"></p>
+  </div>
+
+  <!-- Clock -->
+  <div id="clock-container">
+    <div class="clock-col">
+      <p class="clock-label">
+        DAY
+      </p>
+      <h1 id="clock-day" class="clock-timer">
+      </h1>
+    </div>
+    <div class="clock-col">
+      <p class="clock-label">
+        HOURS
+      </p>
+      <h1 id="clock-hour" class="clock-timer">
+      </h1>
+    </div>
+    <div class="clock-col">
+      <p class="clock-label">
+        MINUTES
+      </p>
+      <h1 id="clock-min" class="clock-timer">
+      </h1>
+    </div>
+    <div class="clock-col">
+      <p class="clock-label">
+        SECONDS
+      </p>
+      <h1 id="clock-sec" class="clock-timer">
+      </h1>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <input id="search" results=5 onkeypress="handle(event)"></input>
+
+  <!-- Dock -->
+  <div id="dock">
+  </div>
+
+<script src="weather/weather.js"></script>
+<script src="clock/clock.js"></script>
+<script src="apps/load.js"></script>
+<script src="search/search.js"></script>
+
+</body>
+</html>
