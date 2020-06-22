@@ -1,5 +1,5 @@
 var apps_dir = urlParams.get("type") || "default";
-fetch("apps/" + apps_dir + "/_list.json")
+fetch("apps/" + apps_dir + "/list.json")
   .then(response => response.json())
   .then(json => loadIcons(json));
 
