@@ -4,8 +4,10 @@ const getLocation = (pos) => [pos.coords.latitude, pos.coords.longitude];
 const urlParams = new URLSearchParams(window.location.search);
 //Set coords array to location if found, else get url coords parameter
 var coords = navigator.geolocation.getCurrentPosition(getLocation) || JSON.parse(urlParams.get('coords'));
-//Fetch open weather api (type your api key)
-var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + coords[0] + "&lon=" + coords[1] + "&appid=eff32c0e4ee7d564b4f05dc6520b9ff7&units=metric";
+//Type your api key
+var api = "eff32c0e4ee7d564b4f05dc6520b9ff7";
+//Fetch open weather api
+var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + coords[0] + "&lon=" + coords[1] + "&appid=" + api + "&units=metric";
 fetch(url)
   .then(response => response.json())
   .then(data => showWeather(data));

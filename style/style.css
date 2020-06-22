@@ -1,13 +1,4 @@
 body {
-  /*Full height*/
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-
   /*Image*/
   background-image: url('bg.png');
   background-repeat: no-repeat;
@@ -77,11 +68,15 @@ h1, h3 {
 }
 
 #search {
+  /*Hide*/
+  display: none;
+
   /*Size*/
   width: 400px;
   height: 20px;
 
   /*Position*/
+  margin: auto;
   margin-top: 90px;
 
   /*Color*/
@@ -102,11 +97,11 @@ h1, h3 {
   display: flex;
 
   /*Position*/
-  margin-top: 130px;
-
-  /*Center*/
-  align-items: center;
-  justify-content: center;
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
 }
 
 .dock-icon {
@@ -117,12 +112,10 @@ h1, h3 {
   /* Animation */
   margin-left: 10px;
   margin-right: 10px;
-  margin-bottom: 10px;
   transition: transform .2s;
 }
 
 .dock-icon:hover {
   /*150% zoom*/
-  margin-bottom: 0px;
   transform: scale(1.5);
 }
