@@ -3,7 +3,7 @@ const getLocation = (pos) => [pos.coords.latitude, pos.coords.longitude];
 //Get url parameters
 const urlParams = new URLSearchParams(window.location.search);
 //Set coords array to location if found, else get url coords parameter
-var coords = navigator.geolocation.getCurrentPosition(getLocation) || JSON.parse(urlParams.get('coords'));
+var coords = navigator.geolocation.getCurrentPosition(getLocation) || [40.7278076, 24.7524145];
 //Type your api key
 var api = "eff32c0e4ee7d564b4f05dc6520b9ff7";
 //Fetch open weather api
