@@ -28,10 +28,24 @@ function tick() {
 }
 //Load time when time is searched
 function loadTime(tz) {
-  var usaTime = "";
-  if (tz != "") {
-    var usaTime = new Date().toLocaleString("en-US", {timeZone: tz});
+  if (tz == "") {
+    var date = new Date();
+    a_title.innerHTML = "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes";
+  } else if(isValidTimeZone(tz)) {
+    var countryTime = new Date().toLocaleString("en-US", {timeZone: tz});
+    var date = new Date(countryTime);
+    a_title.innerHTML = "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes";
+  } else {
+    a_title.innerHTML = "false time zone";
   }
-  var date = new Date(usaTime);
-  a_title.innerHTML = "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes";
+}
+//Find valid timezone
+function isValidTimeZone(tz) {
+    try {
+        Intl.DateTimeFormat(undefined, {timeZone: tz});
+        return true;
+    }
+    catch (ex) {
+        return false;
+    }
 }

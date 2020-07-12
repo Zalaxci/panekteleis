@@ -22,6 +22,7 @@ function keyUp(e) {
       break;
     case "youtube":
       url = "https://studio.youtube.com";
+      var inputText = "";
       break;
     case "g " + inputText.substring(2):
       var inputText = inputText.substring(2);
@@ -34,10 +35,12 @@ function keyUp(e) {
     case "youtube " + inputText.substring(8):
       var inputText = inputText.substring(8);
       url = "https://www.youtube.com/results?search_query=" + inputText;
+      var inputText = "";
       break;
     case "yt " + inputText.substring(3):
       var inputText = inputText.substring(3);
       url = "https://www.youtube.com/results?search_query=" + inputText;
+      var inputText = "";
       break;
   }
   //If enter is pressed, search/go to url, if not show answer text
@@ -50,16 +53,18 @@ function ask(what) {
   a_icon.style.background = "";
   a_title.innerHTML = "";
   a_text.innerHTML = "";
+  a_text.removeAttribute("href");
   //Shows text depending on input
   switch (what) {
-    case "time" + what.substring(4):
-      if (what.length > 11) {
-        var tz = what.substring(5).replace(/ /, "/");
-        var tz = tz.replace(/ /g, "_");
-        loadTime(tz);
-      } else {
-        loadTime();
-      }
+    case "":
+      break;
+    case "time":
+      loadTime();
+      break;
+    case "time " + what.substring(5):
+      var tz = what.substring(5).replace(/ /, "/");
+      var tz = tz.replace(/ /g, "_");
+      loadTime(tz);
       break;
     case "weather" + what.substring(7):
       loadWeather(what.substring(7));
