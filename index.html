@@ -3,20 +3,21 @@
 <head>
   <title>Cool start page</title>
 	<meta charset="utf-8">
-  <link rel="icon" href="https://image.flaticon.com/icons/svg/1037/1037960.svg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
-   <link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap"> 
   <link rel="stylesheet" href="style/style.css">
 </head>
-<body onkeypress="keyPress(event)" onkeyup="keyDown()">
+<body>
 
-  <!-- Weather -->
-  <div id="weather-container">
-    <div id="sky"></div>
-    <h1 id="desc"></h1>
-    <h3 id="temp"></h3>
-    <p id="loc" class="center"></p>
+  <!-- Search -->
+  <div class="search">
+    <input id="search-box" onkeyup="keyUp(event)"></input>
+    <div id="answer">
+      <div id="answer-icon"></div>
+      <h2 id="answer-title"></h2>
+      <a id="answer-text"></a>
+    </div>
   </div>
 
   <!-- Clock -->
@@ -51,24 +52,10 @@
     </div>
   </div>
 
-  <!-- Search -->
-  <form autocomplete="off">
-    <div class="search">
-      <input id="search-box"></input>
-      <div id=autocomplete></div>
-    </div>
-  </form>
-
-  <!-- Dock -->
-  <div id="dock"></div>
-
   <!-- Scripts -->
   <script src="weather/weather.js"></script>
   <script src="clock/clock.js"></script>
-  <script>
-    alert("hi");  
-    alert("hi2");
-  </script>
+  <script src="search/search.js"></script>
 
 </body>
 </html>

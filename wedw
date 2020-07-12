@@ -1,0 +1,55 @@
+[33mcommit 8eb91891ab9bb47ef74c5f08e70bf7dc2fbed8dc[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: zalaxci <ima@cyber-wizard.com>
+Date:   Thu Jul 9 22:22:42 2020 +0300
+
+    Working on autocorrect
+
+[33mcommit f8501d9742c64ccfe2dd229ff763a801afa11740[m
+Author: zalaxci <ima@cyber-wizard.com>
+Date:   Wed Jul 8 20:32:50 2020 +0300
+
+    Replaced apps with cool search bar, added cool fonts
+
+[33mcommit b4560138543478ca5b19b50ffb732bd8085d196c[m
+Author: zalaxci <ima@cyber-wizard.com>
+Date:   Mon Jun 22 13:16:06 2020 +0300
+
+    Final code
+
+[33mcommit eeef2f04c16a705684113cdea9a7ae8c10514bc2[m
+Author: Παντελής <zalaxci@protonmail.com>
+Date:   Mon Jun 22 11:04:02 2020 +0300
+
+    Trying to get app list to work on github.io
+    
+    Updated js
+
+[33mcommit 8b5178aec5f6d262ef7e55768624901b37f5c6c6[m
+Author: Παντελής <zalaxci@protonmail.com>
+Date:   Sun Jun 21 23:30:12 2020 +0300
+
+    Trying to get app list to work on github.io
+
+[33mcommit d40ddf6a30e1908dd776d1f7796b591bc6e3101b[m
+Author: Παντελής <zalaxci@protonmail.com>
+Date:   Sun Jun 21 23:29:21 2020 +0300
+
+    Trying to get app list to work in github.io
+
+[33mcommit 667b9e64075f17fd526dd4abe2795b25e2c1cc31[m
+Author: zalaxci <ima@cyber-wizard.com>
+Date:   Sun Jun 21 23:02:17 2020 +0300
+
+    Adding the project to git/github
+
+[33mcommit c5e3b7c9563ccab1f3dbc7e3f0a2d3d8c710b7c8[m
+Author: Παντελής <zalaxci@protonmail.com>
+Date:   Sun Jun 21 22:57:44 2020 +0300
+
+    First version of readme.md
+
+[33mcommit 3036fc2e36e97cbd0b278f92e59d7330a51180a4[m
+Author: Παντελής <zalaxci@protonmail.com>
+Date:   Sun Jun 21 22:31:17 2020 +0300
+
+    Initial commit

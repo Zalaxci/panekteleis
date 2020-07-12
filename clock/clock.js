@@ -26,3 +26,12 @@ function tick() {
   //Repeat
   setTimeout(tick, 1000);
 }
+//Load time when time is searched
+function loadTime(tz) {
+  var usaTime = "";
+  if (tz != "") {
+    var usaTime = new Date().toLocaleString("en-US", {timeZone: tz});
+  }
+  var date = new Date(usaTime);
+  a_title.innerHTML = "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes";
+}
