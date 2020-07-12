@@ -17,9 +17,6 @@ function keyUp(e) {
   var url = "https://www.ecosia.org/search?q=" + inputText;
   //Different url for different inputs
   switch (inputText) {
-    case "weather":
-      url = "https://meteo.gr/cf.cfm?city_id=71";
-      break;
     case "youtube":
       url = "https://studio.youtube.com";
       var inputText = "";
@@ -27,10 +24,6 @@ function keyUp(e) {
     case "g " + inputText.substring(2):
       var inputText = inputText.substring(2);
       url = "https://www.google.com/search?q=" + inputText;
-      break;
-    case "gif " + inputText.substring(4):
-      var inputText = inputText.substring(4);
-      url = "https://giphy.com/search/" + inputText;
       break;
     case "youtube " + inputText.substring(8):
       var inputText = inputText.substring(8);
@@ -57,6 +50,12 @@ function ask(what) {
   //Shows text depending on input
   switch (what) {
     case "":
+    case "how" + what.substring(3):
+      break;
+    case what.substring(0,(what.length - 4)) + " gif":
+      fetch("https://api.tenor.com/v1/search?q=" + what.substring(0,(what.length - 4)) + "&key=TTJEW9NDWEJV&limit=1")
+        .then(response => response.json())
+        .then(json => loadGif(json));
       break;
     case "time":
       loadTime();
@@ -69,8 +68,6 @@ function ask(what) {
     case "weather" + what.substring(7):
       loadWeather(what.substring(7));
       break;
-    case "how" + what.substring(3):
-      break;
     default:
       fetch("https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=description|pageimages&titles=" + what + "&piprop=original&formatversion=2")
         .then(response => response.json())
@@ -80,7 +77,7 @@ function ask(what) {
   answer.classList.add("animate__animated");
   answer.classList.add("animate__zoomInDown");
 }
-
+//Load wikipedia data
 function loadWiki(json) {
   if(typeof json.query.pages[0].original != 'undefined'){
     a_icon.style.background = "url(" + json.query.pages[0].original.source + ")";
@@ -89,4 +86,13 @@ function loadWiki(json) {
     a_text.innerHTML = "more on wikipedia";
     a_text.href = "https://en.wikipedia.org/wiki/" + json.query.pages[0].title;
   }
+}
+//Load cool gif
+function loadGif(json) {
+  a_icon.style.width = json.results[0].media[0].tinygif.dims[0] + "px";
+  a_icon.style.height = json.results[0].media[0].tinygif.dims[1] + "px";
+  a_icon.style.background = "url(" + json.results[0].media[0].tinygif.url + ")";
+  a_title.innerHTML = json.results[0].title;
+  a_text.innerHTML = "view on tenor";
+  a_text.href = json.results[0].itemurl;
 }

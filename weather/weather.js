@@ -33,6 +33,8 @@ function showWeather(data) {
 		'50n': 'nmist.svg'
 	};
   icon = icons[data.weather[0].icon];
+  a_icon.style.width = "80px";
+  a_icon.style.height = "80px";
   a_icon.style.background = "url('weather/icons/" + icon + "')";
   a_icon.style.backgroundSize = "cover";
   a_title.innerHTML = data.weather[0].description + " in " + data.name;
