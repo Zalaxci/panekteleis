@@ -1,7 +1,6 @@
 //Get search bar and text
 var input = document.getElementById("search-box");
 var answer = document.getElementById("answer");
-var a_icon = document.getElementById("answer-icon");
 var a_title = document.getElementById("answer-title");
 var a_text = document.getElementById("answer-text");
 //Higlight input box and load weather
@@ -52,7 +51,6 @@ function keyUp(e) {
 
 function ask(what) {
   //Remove previous text
-  a_icon.style.background = "";
   a_title.innerHTML = "";
   a_text.innerHTML = "";
   a_text.removeAttribute("href");
@@ -62,9 +60,9 @@ function ask(what) {
     case "how" + what.substring(3):
       break;
     case what.substring(0,(what.length - 4)) + " gif":
-      fetch("https://api.tenor.com/v1/search?q=" + what.substring(0,(what.length - 4)) + "&key=TTJEW9NDWEJV&limit=1")
-        .then(response => response.json())
-        .then(json => loadGif(json));
+      //fetch("https://api.tenor.com/v1/search?q=" + what.substring(0,(what.length - 4)) + "&key=TTJEW9NDWEJV&limit=1")
+      //  .then(response => response.json())
+      //  .then(json => loadGif(json));
       break;
     case "time":
       loadTime();
@@ -82,15 +80,10 @@ function ask(what) {
         .then(response => response.json())
         .then(json => loadWiki(json));
   }
-  //Cool animation
-  answer.classList.add("animate__animated");
-  answer.classList.add("animate__zoomInDown");
 }
 //Load wikipedia data
 function loadWiki(json) {
   if(typeof json.query.pages[0].original != 'undefined'){
-    a_icon.style.background = "url(" + json.query.pages[0].original.source + ")";
-    a_icon.style.backgroundSize = "cover";
     a_title.innerHTML = json.query.pages[0].description;
     a_text.innerHTML = "more on wikipedia";
     a_text.href = "https://en.wikipedia.org/wiki/" + json.query.pages[0].title;
@@ -98,9 +91,6 @@ function loadWiki(json) {
 }
 //Load cool gif
 function loadGif(json) {
-  a_icon.style.width = json.results[0].media[0].tinygif.dims[0] + "px";
-  a_icon.style.height = json.results[0].media[0].tinygif.dims[1] + "px";
-  a_icon.style.background = "url(" + json.results[0].media[0].tinygif.url + ")";
   a_title.innerHTML = json.results[0].title;
   a_text.innerHTML = "view on tenor";
   a_text.href = json.results[0].itemurl;

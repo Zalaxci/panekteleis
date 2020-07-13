@@ -1,10 +1,14 @@
+@media only screen and (max-width:500px) {
+  /*For mobile phones:*/
+  #search-box {
+    /*Size*/
+    width: 100%;
+  }
+}
+
 body {
-  /*Image*/
-  background-image: url('assets/bg.png');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: bottom;
+  /*Bg color*/
+  background-color: black;
 
   /*Text style*/
   font-family: 'Montserrat Subrayada', sans-serif;
@@ -13,78 +17,33 @@ body {
   text-align: center;
 }
 
-.search {
-  /*Position*/
-  margin-top: 3%;
-
-  /*Size*/
-  width:100%;
-
-  /*Text*/
-  font-family: 'Comfortaa', cursive;
-  text-align: center;
-  color: white;
-}
-
 #search-box {
-  /*Margin bellow*/
-  margin-bottom: 8%;
+  /*Position*/
+  margin: auto;
+  margin-top: 10%;
 
   /*Size*/
-  width: 100%;
   height: 60px;
 
-  /*No border or bg*/
-  border: none;
+  /*Border*/
+  border: 2px solid #ffffff;
 	background: rgba(0, 0, 0, 0);
 
   /*Text*/
   font-family: 'Comfortaa', cursive;
   text-align: center;
-  font-size: 3rem;
+  font-size: 4.5rem;
   color: white;
 }
 
-#answer-icon {
-  /*Size & alignment*/
-  width: 0px;
-  height: 0px;
-  display: inline-block;
-}
-
-#clock-container {
-  /*Don't disable untill js runs*/
-  display: none;
-
+#answer {
   /*Position*/
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  margin-top: 25vh;
+  margin-left: auto;
+  margin-right: auto;
 
-  /*Center*/
-  align-items: center;
-  justify-content: center;
-}
-
-.clock-col {
-  /*Position & margins*/
-  position: relative;
-  margin-left: 40px;
-  margin-right: 40px;
-
-  /*Stable width*/
-  min-width: 90px;
-}
-
-.clock-label {
-  /*Text style*/
+  /*Text*/
   font-family: 'Comfortaa', cursive;
-  font-size: .9rem;
-}
-
-.clock-timer {
-  /*Text style*/
-  font-size: 3.6rem;
-  font-weight: bold;
+  font-size: 1rem;
+  color: white;
 }

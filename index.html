@@ -3,7 +3,7 @@
 <head>
   <title>Cool start page</title>
 	<meta charset="utf-8">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
+  <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap"> 
   <link rel="stylesheet" href="style.css">
@@ -11,50 +11,14 @@
 <body>
 
   <!-- Search -->
-  <div class="search">
-    <input id="search-box" onkeyup="keyUp(event)"></input>
-    <div id="answer">
-      <div id="answer-icon"></div>
-      <h2 id="answer-title"></h2>
-      <a id="answer-text"></a>
-    </div>
-  </div>
-
-  <!-- Clock -->
-  <div id="clock-container">
-    <div class="clock-col">
-      <p class="clock-label">
-        DAY
-      </p>
-      <h1 id="clock-day" class="clock-timer">
-      </h1>
-    </div>
-    <div class="clock-col">
-      <p class="clock-label">
-        HOURS
-      </p>
-      <h1 id="clock-hour" class="clock-timer">
-      </h1>
-    </div>
-    <div class="clock-col">
-      <p class="clock-label">
-        MINUTES
-      </p>
-      <h1 id="clock-min" class="clock-timer">
-      </h1>
-    </div>
-    <div class="clock-col">
-      <p class="clock-label">
-        SECONDS
-      </p>
-      <h1 id="clock-sec" class="clock-timer">
-      </h1>
-    </div>
+  <input id="search-box" onkeyup="keyUp(event)"></input>
+  <div id="answer">
+    <h2 id="answer-title"></h2>
+    <a id="answer-text"></a>
   </div>
 
   <!-- Scripts -->
   <script src="js/weather.js"></script>
-  <script src="js/clock.js"></script>
   <script src="js/search.js"></script>
 
 </body>
