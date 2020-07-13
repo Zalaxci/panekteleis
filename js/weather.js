@@ -4,9 +4,9 @@ const urlParams = new URLSearchParams(queryString);
 //Load weather
 function loadWeather(place) {
   //Type your city
-  var city = place || urlParams.get("city") || "thasos";
+  var city = place || urlParams.get("city") || "";
   //Type your api key
-  var api = urlParams.get("key") || "eff32c0e4ee7d564b4f05dc6520b9ff7";
+  var api = urlParams.get("key") || "";
   //Fetch open weather api
   var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + api + "&units=metric";
   fetch(url)
