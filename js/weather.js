@@ -5,10 +5,8 @@ const urlParams = new URLSearchParams(queryString);
 function loadWeather(place) {
   //Type your city
   var city = place || urlParams.get("city") || "";
-  console.log(city);
   //Type your api key
   var api = urlParams.get("key") || "";
-  console.log(api);
   //Fetch open weather api
   var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + api + "&units=metric";
   fetch(url)

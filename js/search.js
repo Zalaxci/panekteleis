@@ -22,12 +22,17 @@ function keyUp(e) {
       var inputText = "";
       break;
     case "youtube":
-      url = "https://studio.youtube.com";
+      url = "https://youtube.com";
+      var inputText = "";
+      break;
+    case "github":
+      url = "https://github.com";
       var inputText = "";
       break;
     case "g " + inputText.substring(2):
       var inputText = inputText.substring(2);
       url = "https://www.google.com/search?q=" + inputText;
+      var inputText = "";
       break;
     case "youtube " + inputText.substring(8):
       var inputText = inputText.substring(8);

@@ -1,6 +1,19 @@
 # startpage
-A simple, work in progress startpage with weather, a clock, some apps and a duckduckgo search bar.
+A simple, work in progress startpage with an experimental search that can perform a variety of things.
+![Screenshot](/assets/screenshot.png)
 
-Apps can be customized in apps/default. You can also add different sets of apps in apps/[category] that can be accessed with parameter ?type=[category].
-Geolocation should locate your position, but if not (for me it just errors with error code 2), type your coords in the url as ?coords=[lat, long]
-Most of the code is by me, but some animations are by https://animate.style/, fonts are from google fonts and some of the clock code is taken from https://codepen.io/eehayman/pen/jVPKpN
+## Search can:
+Find info on wikipedia about something.  
+Web search, default search engine is ecosia but it can be changed by typing a keyword in front of the query ("g " for google and "yt " for youtube). By typing gif at the end cool GIFs will be shown.  
+weather( [city]) = show weather in any city/village that is included in openweathermap, if a city isn't typed weather in your city (which can be provided in js/weather.js or as url parameter ?city=) will be shown  
+[bookmark text], then enter = redirect to bookmark (bookmarks are in js/search.js and there is currently youtube, reddit and github)  
+time( [timezone]) = show the time, there is a clock but this also works on other timezones, by timing the tz as [continent place] for example "america new york"  
+
+## Clock
+Clock is a modified version of https://codepen.io/eehayman/pen/jVPKpN
+
+## Animations
+Found in https://animate.style/
+
+## Liscense
+https://opensource.org/licenses/MIT
