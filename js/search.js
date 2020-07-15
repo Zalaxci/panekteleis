@@ -1,3 +1,5 @@
+//Url var, used to redirect on enter
+var url;
 //Get search bar and text
 var input = document.getElementById("search-box");
 var answer = document.getElementById("answer");
@@ -8,100 +10,115 @@ var a_text = document.getElementById("answer-text");
 input.value = "weather";
 input.focus();
 input.select();
-ask("weather");
+search("");
 //On key up
-function keyUp(e) {
-  //Get input text
-  var inputText = input.value;
-  //Default url
-  var url = "https://www.ecosia.org/search?q=" + inputText;
-  //Different url for different inputs (bookmarks/different types of search)
-  switch (inputText) {
-    case "reddit":
-      url = "https://reddit.com";
-      var inputText = "";
-      break;
-    case "youtube":
-      url = "https://youtube.com";
-      var inputText = "";
-      break;
-    case "github":
-      url = "https://github.com";
-      var inputText = "";
-      break;
-    case "g " + inputText.substring(2):
-      var inputText = inputText.substring(2);
-      url = "https://www.google.com/search?q=" + inputText;
-      var inputText = "";
-      break;
-    case "youtube " + inputText.substring(8):
-      var inputText = inputText.substring(8);
-      url = "https://www.youtube.com/results?search_query=" + inputText;
-      var inputText = "";
-      break;
-    case "yt " + inputText.substring(3):
-      var inputText = inputText.substring(3);
-      url = "https://www.youtube.com/results?search_query=" + inputText;
-      var inputText = "";
-      break;
+function search(e) {
+  //If input is not blank
+  if (input.value != "") {
+    //Bookmarks (set the url to that of the bookmark)
+    if (input.value == "github") url = "https://github.com";
+    else if (input.value == "reddit") url = "https://reddit.com";
+    else if (input.value == "youtube") url = "https://youtube.com";
+    //Time
+    else if (input.value.startsWith("time")) loadTime();
+    //Weather
+    else if (input.value.startsWith("weather")) loadWeather();
+    //Gifs
+    else if (input.value.endsWith("gif")) loadGif();
+    //Search on google/yt (set the url to google/youtube + the input)
+    else if (input.value.startsWith("g ")) url = "https://www.google.com/search?q=" + input.value.substring(2);
+    else if (input.value.startsWith("yt ")) url = "https://www.google.com/search?q=" + input.value.substring(3);
+    //Load wikipedia and search ecosia (set the url to ecosia + the input
+    else loadWiki();
+    //If enter is pressed, go to url
+    if (e.keyCode == 13) window.location.href = url;
   }
-  //If enter is pressed, search/go to url, if not show answer text
-  if (e.keyCode == 13) window.location.href = url;
-  else ask(inputText);
 }
-
-function ask(what) {
-  //Remove previous text
-  a_icon.style.background = "";
-  a_title.innerHTML = "";
-  a_text.innerHTML = "";
-  a_text.removeAttribute("href");
-  //Shows text/images depending on input
-  switch (what) {
-    case "":
-    case "how" + what.substring(3):
-      break;
-    case what.substring(0,(what.length - 4)) + " gif":
-      fetch("https://api.tenor.com/v1/search?q=" + what.substring(0,(what.length - 4)) + "&key=TTJEW9NDWEJV&limit=1")
-        .then(response => response.json())
-        .then(json => loadGif(json));
-      break;
-    case "time":
-      loadTime();
-      break;
-    case "time " + what.substring(5):
-      var tz = what.substring(5).replace(/ /, "/");
-      var tz = tz.replace(/ /g, "_");
-      loadTime(tz);
-      break;
-    case "weather" + what.substring(7):
-      loadWeather(what.substring(7));
-      break;
-    default:
-      fetch("https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=description|pageimages&titles=" + what + "&piprop=original&formatversion=2")
-        .then(response => response.json())
-        .then(json => loadWiki(json));
+//Load time
+function loadTime() {
+  if (input.value.length == 4) {
+    //If no timezone is typed, load current time
+    var date = new Date();
+    loadText(["", "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes", "", "https://www.timeanddate.com/worldclock/"]);
+  } else {
+    //Get typed timezone
+    var tz = input.value.substring(5).replace(/ /, "/").replace(/ /g, "_");
+    if (isValidTimeZone(input.value.substring(5).replace(/ /, "/").replace(/ /g, "_"))) {
+      //If it is valid, load it
+      var countryTime = new Date().toLocaleString("en-US", {timeZone: tz});
+      var date = new Date(countryTime);
+      loadText(["", "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes", "", "https://www.timeanddate.com/worldclock/"]);
+    } else {
+      //If not then output false timezone
+      loadText(["", "false timezone :((", "", ""]);
+    }
   }
-  //Cool animation
-  answer.classList.add("animate__animated");
-  answer.classList.add("animate__zoomInDown");
 }
-//Load wikipedia data
-function loadWiki(json) {
-  if(typeof json.query.pages[0].original != 'undefined'){
-    a_icon.style.background = "url(" + json.query.pages[0].original.source + ")";
-    a_icon.style.backgroundSize = "cover";
-    a_title.innerHTML = json.query.pages[0].description;
-    a_text.innerHTML = "more on wikipedia";
-    a_text.href = "https://en.wikipedia.org/wiki/" + json.query.pages[0].title;
-  }
+//Load weather
+function loadWeather() {
+  //Get url parameters
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  //Type your city or input it as ?city= in url or type it in the search box
+  var city = input.value.substring(7) || urlParams.get("city") || "thasos";
+  //Type your api key or input it as ?key= in url
+  var api = urlParams.get("key") || "eff32c0e4ee7d564b4f05dc6520b9ff7";
+  //Fetch open weather api
+  fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + api + "&units=metric")
+    .then(response => response.json())
+    .then(json => {
+    //Icon list
+    var icons = {
+		  '01d': 'sun_icon.svg',
+		  '01n': 'moon_icon.svg',
+		  '02d': 'dfew_clouds.svg',
+		  '02n': 'nfew_clouds.svg',
+		  '03d': 'dscattered_clouds.svg',
+		  '03n': 'nscattered_clouds.svg',
+		  '04d': 'dbroken_clouds.svg',
+		  '04n': 'nbroken_clouds.svg',
+		  '09d': 'dshower_rain.svg',
+		  '09n': 'nshower_rain.svg',
+		  '10d': 'd_rain.svg',
+		  '10n': 'n_rain.svg',
+		  '11d': 'dthunderstorm.svg',
+		  '11n': 'nthunderstorm.svg',
+		  '13d': 'snow.svg',
+		  '13n': 'snow.svg',
+		  '50d': 'dmist.svg',
+		  '50n': 'nmist.svg'
+	  };
+    //Weather icon and description
+    loadText(["url('assets/icons/" + icons[json.weather[0].icon] + "')", json.weather[0].description + " in " + json.name, "temperature is " + json.main.temp + "° C, feels like " + json.main.feels_like + "° C", "https://openweathermap.org/city/" + json.id]);
+  });
 }
 //Load cool gif
 function loadGif(json) {
-  a_icon.style.width = json.results[0].media[0].tinygif.dims[0] + "px";
-  a_icon.style.height = json.results[0].media[0].tinygif.dims[1] + "px";
-  a_icon.style.background = "url(" + json.results[0].media[0].tinygif.url + ")";
-  a_title.innerHTML = json.results[0].title;
-  a_text.innerHTML = "view on tenor";
-  a_text.href = json.results[0].itemurl;
+  //Fetch tenor api
+  fetch("https://api.tenor.com/v1/search?q=" + input.value.substring(0,(input.value.length - 4)) + "&key=TTJEW9NDWEJV&limit=1")
+    .then(response => response.json())
+    .then(json => loadText(["url(" + json.results[0].media[0].tinygif.url + ")", json.results[0].title, "", json.results[0].url]));
+}
+//Load wikipedia data
+function loadWiki(json) {
+  //Fetch wikipedia api
+  fetch("https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=description|pageimages&titles=" + input.value + "&piprop=original&formatversion=2")
+    .then(response => response.json())
+    //If article exists (not undefined) load it
+    .then(json => {if(typeof json.query.pages[0].original != 'undefined') loadText(["url(" + json.query.pages[0].original.source + ")", json.query.pages[0].description, "", "https://www.ecosia.org/search?q=" + input.value]);});
+}
+//Show text and icon
+function loadText(array) {
+  //Icon
+  a_icon.style.background = array[0];
+  a_icon.style.backgroundSize = "100% 100%";
+  //Title
+  a_title.innerHTML = array[1];
+  //Text
+  a_text.innerHTML = array[2];
+  //URL (on enter)
+  url = array[3];
+  //Cool animation
+  answer.classList.add("animate__animated");
+  answer.classList.add("animate__zoomInDown");
 }

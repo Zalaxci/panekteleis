@@ -26,26 +26,13 @@ function tick() {
   //Repeat
   setTimeout(tick, 1000);
 }
-//Load time when time is searched
-function loadTime(tz) {
-  if (tz == "") {
-    var date = new Date();
-    a_title.innerHTML = "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes";
-  } else if(isValidTimeZone(tz)) {
-    var countryTime = new Date().toLocaleString("en-US", {timeZone: tz});
-    var date = new Date(countryTime);
-    a_title.innerHTML = "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes";
-  } else {
-    a_title.innerHTML = "false time zone";
-  }
-}
-//Find valid timezone
+//Find valid timezone (used by search.js)
 function isValidTimeZone(tz) {
-    try {
-        Intl.DateTimeFormat(undefined, {timeZone: tz});
-        return true;
-    }
-    catch (ex) {
-        return false;
-    }
+  try {
+    Intl.DateTimeFormat(undefined, {timeZone: tz});
+    return true;
+  }
+  catch (ex) {
+    return false;
+  }
 }
