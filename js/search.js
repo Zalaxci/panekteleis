@@ -60,9 +60,9 @@ function loadWeather() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   //Type your city or input it as ?city= in url or type it in the search box
-  var city = input.value.substring(7) || urlParams.get("city") || "thasos";
+  var city = input.value.substring(7) || urlParams.get("city") || "";
   //Type your api key or input it as ?key= in url
-  var api = urlParams.get("key") || "eff32c0e4ee7d564b4f05dc6520b9ff7";
+  var api = urlParams.get("key") || "";
   //Fetch open weather api
   fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + api + "&units=metric")
     .then(response => response.json())
