@@ -1,3 +1,5 @@
+//Url var, used to redirect on enter
+var url;
 //Get search bar and text
 var input = document.getElementById("search-box");
 var answer = document.getElementById("answer");
@@ -7,117 +9,91 @@ var a_text = document.getElementById("answer-text");
 input.value = "weather";
 input.focus();
 input.select();
-ask("weather");
+search("");
 //On key up
-function keyUp(e) {
-  //Get input text
-  var inputText = input.value;
-  //Default url
-  url = "https://www.ecosia.org/search?q=" + inputText;
-  //Different url for different inputs (bookmarks/different types of search)
-  switch (inputText) {
-    case "reddit":
-      url = "https://reddit.com";
-      inputText = "";
-      break;
-    case "youtube":
-      url = "https://youtube.com";
-      inputText = "";
-      break;
-    case "github":
-      url = "https://github.com";
-      inputText = "";
-      break;
-    case "g " + inputText.substring(2):
-      var inputText = inputText.substring(2);
-      url = "https://www.google.com/search?q=" + inputText;
-      inputText = "";
-      break;
-    case "youtube " + inputText.substring(8):
-      var inputText = inputText.substring(8);
-      url = "https://www.youtube.com/results?search_query=" + inputText;
-      inputText = "";
-      break;
-    case "yt " + inputText.substring(3):
-      var inputText = inputText.substring(3);
-      url = "https://www.youtube.com/results?search_query=" + inputText;
-      inputText = "";
-      break;
-    case inputText.substring(0,(inputText.length - 4)) + " gif":
-      if (e.keyCode == 13) fetch("https://api.tenor.com/v1/search?q=" + inputText.substring(0,(inputText.length - 4)) + "&key=TTJEW9NDWEJV&limit=1")
-        .then(response => response.json())
-        .then(json => {
-          var jsonData = json;
-          window.location.href = json.results[0].itemurl;
-        });
-      break;
-  }
-  //If enter is pressed, search/go to url, if not show answer text
-  if (e.keyCode == 13) window.location.href = url;
-  else ask(inputText);
-}
-
-function ask(what) {
-  //Remove previous text
-  a_title.innerHTML = "";
-  a_text.innerHTML = "";
-  a_text.removeAttribute("href");
-  //Shows text/images depending on input
-  switch (what) {
-    case "":
-    case "how" + what.substring(3):
-      break;
-    case "time":
-      loadTime();
-      break;
-    case "time " + what.substring(5):
-      var tz = what.substring(5).replace(/ /, "/");
-      tz = tz.replace(/ /g, "_");
-      loadTime(tz);
-      break;
-    case "weather" + what.substring(7):
-      loadWeather(what.substring(7));
-      break;
-    default:
-      fetch("https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=description|pageimages&titles=" + what + "&piprop=original&formatversion=2")
-        .then(response => response.json())
-        .then(json => loadWiki(json));
+function search(e) {
+  //If input is not blank
+  if (input.value != "") {
+    //Bookmarks (set the url to that of the bookmark)
+    if (input.value == "github") url = "https://github.com";
+    else if (input.value == "reddit") url = "https://reddit.com";
+    else if (input.value == "youtube") url = "https://youtube.com";
+    //Time
+    else if (input.value.startsWith("time")) loadTime();
+    //Weather
+    else if (input.value.startsWith("weather")) loadWeather();
+    //Gifs
+    else if (input.value.endsWith("gif")) loadGif();
+    //Search on google/yt (set the url to google/youtube + the input)
+    else if (input.value.startsWith("g ")) url = "https://www.google.com/search?q=" + input.value.substring(2);
+    else if (input.value.startsWith("yt ")) url = "https://www.google.com/search?q=" + input.value.substring(3);
+    //Load wikipedia and search ecosia (set the url to ecosia + the input)
+    else {
+      url = "https://duckduckgo.com/?q=" + input.value
+      loadWiki();
+    }
+    //If enter is pressed, go to url
+    if (e.keyCode == 13) window.location.href = url;
   }
 }
-//Load wikipedia data
-function loadWiki(json) {
-  if(typeof json.query.pages[0].original != 'undefined'){
-    a_title.innerHTML = json.query.pages[0].description;
-    a_text.innerHTML = "more on wikipedia";
-    a_text.href = "https://en.wikipedia.org/wiki/" + json.query.pages[0].title;
+//Load time
+function loadTime() {
+  if (input.value.length == 4) {
+    //If no timezone is typed, load current time
+    var date = new Date();
+    loadText("the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes", "", "https://www.timeanddate.com/worldclock/");
+  } else {
+    //Get typed timezone
+    var tz = input.value.substring(5).replace(/ /, "/").replace(/ /g, "_");
+    if (true) {
+      //If it is valid, load it
+      var countryTime = new Date().toLocaleString("en-US", {timeZone: tz});
+      var date = new Date(countryTime);
+      loadText("the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes", "", "https://www.timeanddate.com/worldclock/");
+    } else {
+      //If not then output false timezone
+      loadText("false timezone :((");
+    }
   }
+}
+//Load weather
+function loadWeather() {
+  //Get url parameters
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  //Type your city or input it as ?city= in url or type it in the search box
+  var city = input.value.substring(7) || urlParams.get("city") || "";
+  //Type your api key or input it as ?key= in url
+  var api = urlParams.get("key") || "";
+  //Fetch open weather api
+  fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + api + "&units=metric")
+    .then(response => response.json())
+    .then(json => loadText(json.weather[0].description + " in " + json.name, "temperature is " + json.main.temp + "° C, feels like " + json.main.feels_like + "° C", "https://openweathermap.org/city/" + json.id));
 }
 //Load cool gif
 function loadGif(json) {
-  a_title.innerHTML = json.results[0].title;
-  a_text.innerHTML = "view on tenor";
-  a_text.href = json.results[0].itemurl;
+  //Fetch tenor api
+  fetch("https://api.tenor.com/v1/search?q=" + input.value.substring(0,(input.value.length - 4)) + "&key=TTJEW9NDWEJV&limit=1")
+    .then(response => response.json())
+    .then(json => window.url = json.results[0].url);
 }
-//Load time when time is searched
-function loadTime(tz) {
-  if (tz == "") {
-    var date = new Date();
-    a_title.innerHTML = "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes";
-  } else if(isValidTimeZone(tz)) {
-    var countryTime = new Date().toLocaleString("en-US", {timeZone: tz});
-    var date = new Date(countryTime);
-    a_title.innerHTML = "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes";
-  } else {
-    a_title.innerHTML = "false time zone";
-  }
+//Load wikipedia data
+function loadWiki(json) {
+  //Fetch wikipedia api
+  fetch("https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=description|pageimages&titles=" + input.value + "&piprop=original&formatversion=2")
+    .then(response => response.json())
+    //If article exists (not undefined) load it, else clear text
+    .then(json => {
+      if(typeof json.query.pages[0].original != 'undefined') loadText(json.query.pages[0].description);
+      else loadText();
+    });
 }
-//Find valid timezone
-function isValidTimeZone(tz) {
-    try {
-        Intl.DateTimeFormat(undefined, {timeZone: tz});
-        return true;
-    }
-    catch (ex) {
-        return false;
-    }
+//Show text and icon
+function loadText(title, text, new_url) {
+  //Title
+  a_title.innerHTML = title || "";
+  //Text
+  a_text.innerHTML = text || "";
+  //URL (on enter)
+  if (new_url != "" && new_url != null) url = new_url;
 }
