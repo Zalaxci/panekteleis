@@ -10,39 +10,44 @@ var a_text = document.getElementById("answer-text");
 input.value = "weather";
 input.focus();
 input.select();
-search("");
 //On key up
-function search(e) {
-  //If input is not blank
-  if (input.value != "") {
-    //Bookmarks (set the url to that of the bookmark)
-    if (input.value == "github") url = "https://github.com";
-    else if (input.value == "reddit") url = "https://reddit.com";
-    else if (input.value == "youtube") url = "https://youtube.com";
-    //Time
-    else if (input.value.startsWith("time")) loadTime();
-    //Weather
-    else if (input.value.startsWith("weather")) loadWeather();
-    //Gifs
-    else if (input.value.endsWith("gif")) loadGif();
-    //Search on google/yt (set the url to google/youtube + the input)
-    else if (input.value.startsWith("g ")) url = "https://www.google.com/search?q=" + input.value.substring(2);
-    else if (input.value.startsWith("yt ")) url = "https://www.google.com/search?q=" + input.value.substring(3);
-    //Load wikipedia and search ecosia (set the url to ecosia + the input
-    else {
-      url = "https://duckduckgo.com/?q=" + input.value
-      loadWiki();
-    }
-    //If enter is pressed, go to url
-    if (e.keyCode == 13) window.location.href = url;
-  }
+function keyUp(e) {
+  //If input is not blank, then search, and if enter is pressed load url
+  if (input.value != "" && search() && e.keyCode == 13) window.location.href = url;
+}
+function search() {
+  //Fetch bookmarks (set the url to that of the bookmark)
+  return fetch("bookmarks.json")
+    .then(response => response.json())
+    .then(json => {
+      //Redifine input var
+      var input = document.getElementById("search-box");
+      //If input is equal to a bookmark, change the url to that of the bookmark and return true
+      var i;
+      for (i = 0; i < json.length; i++) if (input.value.startsWith(json[i].keyWord) && changeUrl(json[i].url)) return true;
+      //If not, then perform different functions depending on how the input starts/ends
+      //Time
+      if (input.value.startsWith("time")) loadTime();
+      //Weather
+      else if (input.value.startsWith("weather")) loadWeather();
+      //Cool gifs
+      else if (input.value.endsWith("gif")) loadGif();
+      //Search on google/yt on enter (set the url to google/youtube + the input)
+      else if (input.value.startsWith("g ")) changeUrl("https://www.google.com/search?q=" + input.value.substring(2));
+      else if (input.value.startsWith("yt ")) changeUrl("https://www.youtube.com/results?search_query" + input.value.substring(3));
+      //If none of these statements is true, search ddg and wikipedia
+      else {
+        changeUrl("https://duckduckgo.com/?q=" + input.value); //Search on ddg on enter (set the url to ddg + the input)
+        loadWiki(); //Load text from wikipedia
+      }
+    });
 }
 //Load time
 function loadTime() {
   if (input.value.length == 4) {
     //If no timezone is typed, load current time
     var date = new Date();
-    loadText("", "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes", "", "https://www.timeanddate.com/worldclock/");
+    loadText("", "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes");
   } else {
     //Get typed timezone
     var tz = input.value.substring(5).replace(/ /, "/").replace(/ /g, "_");
@@ -50,12 +55,13 @@ function loadTime() {
       //If it is valid, load it
       var countryTime = new Date().toLocaleString("en-US", {timeZone: tz});
       var date = new Date(countryTime);
-      loadText("", "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes", "", "https://www.timeanddate.com/worldclock/");
+      loadText("", "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes");
     } else {
       //If not then output false timezone
-      loadText(["", "false timezone :((", "", ""]);
+      loadText("", "false timezone :((");
     }
   }
+  url = "https://www.timeanddate.com/worldclock/";
 }
 //Load weather
 function loadWeather() {
@@ -63,9 +69,9 @@ function loadWeather() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   //Type your city or input it as ?city= in url or type it in the search box
-  var city = input.value.substring(7) || urlParams.get("city") || "";
+  var city = input.value.substring(7) || urlParams.get("city") || "thassos";
   //Type your api key or input it as ?key= in url
-  var api = urlParams.get("key") || "";
+  var api = urlParams.get("key") || "eff32c0e4ee7d564b4f05dc6520b9ff7";
   //Fetch open weather api
   fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + api + "&units=metric")
     .then(response => response.json())
@@ -92,7 +98,8 @@ function loadWeather() {
 		  '50n': 'nmist.svg'
 	  };
     //Weather icon and description
-    loadText("url('assets/icons/" + icons[json.weather[0].icon] + "')", json.weather[0].description + " in " + json.name, "temperature is " + json.main.temp + "° C, feels like " + json.main.feels_like + "° C", "https://openweathermap.org/city/" + json.id);
+    loadText("url('assets/icons/" + icons[json.weather[0].icon] + "')", json.weather[0].description + " in " + json.name, "temperature is " + json.main.temp + "° C, feels like " + json.main.feels_like + "° C");
+    changeUrl("https://openweathermap.org/city/" + json.id);
   });
 }
 //Load cool gif
@@ -100,7 +107,10 @@ function loadGif(json) {
   //Fetch tenor api
   fetch("https://api.tenor.com/v1/search?q=" + input.value.substring(0,(input.value.length - 4)) + "&key=TTJEW9NDWEJV&limit=1")
     .then(response => response.json())
-    .then(json => loadText("url(" + json.results[0].media[0].tinygif.url + ")", json.results[0].title, "", json.results[0].url));
+    .then(json => {
+      loadText("url(" + json.results[0].media[0].tinygif.url + ")", json.results[0].title);
+      changeUrl(json.results[0].url);
+      });
 }
 //Load wikipedia data
 function loadWiki(json) {
@@ -114,7 +124,7 @@ function loadWiki(json) {
     });
 }
 //Show text and icon
-function loadText(icon, title, text, new_url) {
+function loadText(icon, title, text) {
   //Icon
   a_icon.style.background = icon || "";
   a_icon.style.backgroundSize = "100% 100%";
@@ -122,9 +132,13 @@ function loadText(icon, title, text, new_url) {
   a_title.innerHTML = title || "";
   //Text
   a_text.innerHTML = text || "";
-  //URL (on enter)
-  if (new_url != "" && new_url != null) url = new_url;
   //Cool animation
   answer.classList.add("animate__animated");
   answer.classList.add("animate__zoomInDown");
+}
+//A function is needed to change the url since fetch code is isolated and cannot access variables
+function changeUrl(new_url) {
+  //URL (on enter)
+  url = new_url;
+  return true;
 }
