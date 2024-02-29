@@ -1,16 +1,13 @@
-body {
-  /*Image*/
-  background-image: url('assets/bg.png');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: bottom;
-
-  /*Text style*/
-  font-family: 'Montserrat Subrayada', sans-serif;
+* {
+  border: none;
   color: white;
-  text-shadow: 0px 0px 22px rgba(50, 50, 50, 1);
-  text-align: center;
+  text-shadow: 0.2rem 0.3rem 0.1rem darkgrey;
+  font-family: "DotGothic16", "Press Start 2P", system-ui, sans-serif;
+  text-decoration: none;
+}
+body {
+  margin: 0;
+  background-color: lightcoral;
 }
 
 .search {
@@ -19,11 +16,6 @@ body {
 
   /*Size*/
   width:100%;
-
-  /*Text*/
-  font-family: 'Comfortaa', cursive;
-  text-align: center;
-  color: white;
 }
 
 #search-box {
@@ -39,10 +31,7 @@ body {
 	background: rgba(0, 0, 0, 0);
 
   /*Text*/
-  font-family: 'Comfortaa', cursive;
-  text-align: center;
   font-size: 3rem;
-  color: white;
 }
 
 #answer-icon {
@@ -79,7 +68,6 @@ body {
 
 .clock-label {
   /*Text style*/
-  font-family: 'Comfortaa', cursive;
   font-size: .9rem;
 }
 
