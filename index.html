@@ -10,47 +10,60 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="flex-row">
 
-  <!-- Search -->
-  <div class="search">
-    <input id="search-box" onkeyup="keyUp(event)"></input>
-    <div id="answer">
-      <div id="answer-icon"></div>
-      <h2 id="answer-title"></h2>
-      <div id="answer-text"></div>
+  <!-- Welcome -->
+  <div id="welcome" class="flex-col">
+    <!-- Bio -->
+    <div id="bio" class="flex-col">
+      <h2>Bio coming soon</h2>
+    </div>
+    <!-- Clock -->
+    <div id="clock-container">
+      <div class="clock-col">
+        <p class="clock-label">
+          Day
+        </p>
+        <h3 id="clock-day" class="clock-timer">
+        </h3>
+      </div>
+      <div class="clock-col">
+        <p class="clock-label">
+          Hours
+        </p>
+        <h3 id="clock-hour" class="clock-timer">
+        </h3>
+      </div>
+      <div class="clock-col">
+        <p class="clock-label">
+          Minutes
+        </p>
+        <h3 id="clock-min" class="clock-timer">
+        </h3>
+      </div>
+      <div class="clock-col">
+        <p class="clock-label">
+          Seconds
+        </p>
+        <h3 id="clock-sec" class="clock-timer">
+        </h3>
+      </div>
     </div>
   </div>
 
-  <!-- Clock -->
-  <div id="clock-container">
-    <div class="clock-col">
-      <p class="clock-label">
-        DAY
-      </p>
-      <h1 id="clock-day" class="clock-timer">
-      </h1>
+  <!-- Widgets -->
+  <div id="widgets" class="flex-col">
+    <!-- Search Box -->
+    <input id="search-box" class="shadow" onkeyup="keyUp(event)"></input>
+    <!-- Main Content -->
+    <div id="content" class="flex-col">
+      <div id="content-icon"></div>
+      <h2 id="content-title"></h2>
+      <div id="content-text"></div>
     </div>
-    <div class="clock-col">
-      <p class="clock-label">
-        HOURS
-      </p>
-      <h1 id="clock-hour" class="clock-timer">
-      </h1>
-    </div>
-    <div class="clock-col">
-      <p class="clock-label">
-        MINUTES
-      </p>
-      <h1 id="clock-min" class="clock-timer">
-      </h1>
-    </div>
-    <div class="clock-col">
-      <p class="clock-label">
-        SECONDS
-      </p>
-      <h1 id="clock-sec" class="clock-timer">
-      </h1>
+    <!-- Other projects -->
+    <div id="other-projects" class="flex-row">
+      <h2>Other projects coming soon</h2>
     </div>
   </div>
 

@@ -2,12 +2,12 @@
 var url;
 //Get search bar and text
 var input = document.getElementById("search-box");
-var answer = document.getElementById("answer");
-var a_icon = document.getElementById("answer-icon");
-var a_title = document.getElementById("answer-title");
-var a_text = document.getElementById("answer-text");
+var answer = document.getElementById("content");
+var a_icon = document.getElementById("content-icon");
+var a_title = document.getElementById("content-title");
+var a_text = document.getElementById("content-text");
 //Higlight input box and load weather
-input.value = "weather";
+input.value = "notes";
 input.focus();
 input.select();
 //On key up
@@ -26,8 +26,6 @@ function search() {
       var i;
       for (i = 0; i < json.length; i++) if (input.value.startsWith(json[i].keyWord) && changeUrl(json[i].url)) return true;
       //If not, then perform different functions depending on how the input starts/ends
-      //Time
-      if (input.value.startsWith("time")) loadTime();
       //Weather
       else if (input.value.startsWith("weather")) loadWeather();
       //Cool gifs
@@ -41,27 +39,6 @@ function search() {
         loadWiki(); //Load text from wikipedia
       }
     });
-}
-//Load time
-function loadTime() {
-  if (input.value.length == 4) {
-    //If no timezone is typed, load current time
-    var date = new Date();
-    loadText("", "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes");
-  } else {
-    //Get typed timezone
-    var tz = input.value.substring(5).replace(/ /, "/").replace(/ /g, "_");
-    if (isValidTimeZone(input.value.substring(5).replace(/ /, "/").replace(/ /g, "_"))) {
-      //If it is valid, load it
-      var countryTime = new Date().toLocaleString("en-US", {timeZone: tz});
-      var date = new Date(countryTime);
-      loadText("", "the time is " + date.getHours() + " o'clock and " + date.getMinutes() + " minutes");
-    } else {
-      //If not then output false timezone
-      loadText("", "false timezone :((");
-    }
-  }
-  url = "https://www.timeanddate.com/worldclock/";
 }
 //Load weather
 function loadWeather() {
@@ -128,6 +105,8 @@ function loadText(icon, title, text) {
   //Icon
   a_icon.style.background = icon || "";
   a_icon.style.backgroundSize = "100% 100%";
+  if (a_icon.style.background == "") a_icon.classList.remove("shadow");
+  else a_icon.classList.add("shadow");
   //Title
   a_title.innerHTML = title || "";
   //Text

@@ -1,78 +1,85 @@
 * {
+  /*Remove border from input boxes & other elements*/
   border: none;
+
+  /*Include padding when sizing elements*/
+  box-sizing: border-box;
+
+  /*Text styling*/
   color: white;
   text-shadow: 0.2rem 0.3rem 0.1rem darkgrey;
   font-family: "DotGothic16", "Press Start 2P", system-ui, sans-serif;
   text-decoration: none;
 }
+
 body {
   margin: 0;
-  background-color: lightcoral;
+  background-color: rgb(172, 108, 108);
+}
+body > * {
+  height: 100vh;
 }
 
-.search {
-  /*Position*/
-  margin-top: 3%;
-
-  /*Size*/
-  width:100%;
+.flex-row {
+  display: flex !important;
+  flex-direction: row;
+}
+.flex-col {
+  display: flex !important;
+  flex-direction: column;
 }
 
-#search-box {
-  /*Margin bellow*/
-  margin-bottom: 8%;
-
-  /*Size*/
-  width: 100%;
-  height: 60px;
-
-  /*No border or bg*/
-  border: none;
-	background: rgba(0, 0, 0, 0);
-
-  /*Text*/
-  font-size: 3rem;
+.shadow {
+  box-shadow: 10px 10px 1px 0px rgba(52,58,69,0.6);
+  -webkit-box-shadow: 10px 10px 1px 0px rgba(52,58,69,0.6);
+  -moz-box-shadow: 10px 10px 1px 0px rgba(52,58,69,0.6);
 }
 
-#answer-icon {
-  /*Size & alignment*/
-  width: 128px;
-  height: 128px;
-  display: inline-block;
+/*Welcome section*/
+#welcome {
+  width: min(500px, 100vw);
+  padding: 1.5rem;
 }
-
-#clock-container {
-  /*Don't disable untill js runs*/
-  display: none;
-
-  /*Position*/
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-
-  /*Center*/
-  align-items: center;
+#bio {
+  flex-grow: 1;
   justify-content: center;
 }
+#clock-container {
+  align-items: center;
+  justify-content: space-between;
 
-.clock-col {
-  /*Position & margins*/
-  position: relative;
-  margin-left: 40px;
-  margin-right: 40px;
-
-  /*Stable width*/
-  min-width: 90px;
+  /*Don't display until Javascript is loaded, so animations happen at the correct time*/
+  display: none;
 }
-
-.clock-label {
-  /*Text style*/
-  font-size: .9rem;
-}
-
 .clock-timer {
-  /*Text style*/
-  font-size: 3.6rem;
-  font-weight: bold;
+  font-family: "Press Start 2P", system-ui, sans-serif;;
+}
+
+/*Widgets section*/
+#widgets {
+  justify-content: space-evenly;
+  align-items: center;
+  flex-grow: 1;
+}
+#search-box {
+  /*Size*/
+  width: 95%;
+  font-size: 1.6rem;
+
+  /*Dark grey background*/
+	background: rgb(52, 58, 60)
+}
+#content {
+  width: 100%;
+  align-items: center;
+}
+#content-icon {
+  /*Size & alignment*/
+  width: calc(30vh + 50px);
+  height: calc(30vh + 50px);
+  display: inline-block;
+}
+#other-projects {
+  align-items: center;
+  place-content: center;
 }
