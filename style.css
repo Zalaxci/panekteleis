@@ -7,7 +7,7 @@
 
   /*Text styling*/
   color: white;
-  text-shadow: 0.2rem 0.3rem 0.1rem darkgrey;
+  text-shadow: 0.15rem 0.2rem 0.1rem rgba(169, 169, 169, 0.7);
   font-family: "DotGothic16", "Press Start 2P", system-ui, sans-serif;
   text-decoration: none;
 }
