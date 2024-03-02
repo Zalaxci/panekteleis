@@ -56,12 +56,13 @@ body > * {
 }
 
 /*Widgets section*/
-#widgets {
+#command-panel {
+  padding: 1.5rem;
   justify-content: space-evenly;
   align-items: center;
   flex-grow: 1;
 }
-#search-box {
+#command-input {
   /*Size*/
   width: 95%;
   font-size: 1.6rem;
@@ -69,15 +70,9 @@ body > * {
   /*Dark grey background*/
 	background: rgb(52, 58, 60)
 }
-#content {
-  width: 100%;
-  align-items: center;
-}
-#content-icon {
-  /*Size & alignment*/
-  width: calc(30vh + 50px);
-  height: calc(30vh + 50px);
-  display: inline-block;
+#widget {
+  width: 95%;
+  align-items: left;
 }
 #other-projects {
   align-items: center;

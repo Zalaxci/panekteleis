@@ -1,0 +1,39 @@
+[
+    {
+        "command": "fav $name",
+        "description": "display a list of bookmarks - when pressing enter open the one with the typed name if it exists",
+        "type": "widget"
+    },
+    {
+        "command": "d $query",
+        "description": "search for $query on duckguckgo.com in a new tab",
+        "type": "website",
+        "url": "https://duckduckgo.com/?q=$query"
+    },
+    {
+        "command": "g $query",
+        "description": "search for $query on google.com in a new tab",
+        "type": "website",
+        "url": "https://www.google.com/search?q=$query"
+    },
+    {
+        "command": "yt $query",
+        "description": "search for $query on youtube.com in a new tab",
+        "type": "website",
+        "url": "https://www.youtube.com/results?search_query=$query"
+    },
+    {
+        "command": "w $article",
+        "description": "view $article on wikipedia within this page",
+        "type": "widget"
+    },
+    {
+        "command": "notes $function $name",
+        "description": "show a note-taking widget, and optionally perform a function (add, delete or edit) on note with the inputed name"
+    },
+    {
+        "command": "gif $object",
+        "description": "display a gif of $object (e.g. a cat) from tenor within this page",
+        "type": "widget"
+    }
+]

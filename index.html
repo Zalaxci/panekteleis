@@ -21,8 +21,8 @@
       <p>
         = "I am a cat" (lit. cat + politeness particle) in Japanese<br>
         this is a hub of cat-themed websites, as well as a personal personal page created by Zalaxci :-)<br>
-        it also contains a lot of widgets one can use via the search bar on the top right :o<br>
-        check out the list of all widgets on the right ->
+        it also contains a lot of commands one can use via the search bar on the top right :o<br>
+        check out the list of all commands on the right ->
       </p>
       <h2>Zalaxci...</h2>
       <p>
@@ -65,16 +65,12 @@
     </div>
   </div>
 
-  <!-- Widgets -->
-  <div id="widgets" class="flex-col">
-    <!-- Search Box -->
-    <input id="search-box" class="shadow" onkeyup="keyUp(event)"></input>
-    <!-- Main Content -->
-    <div id="content" class="flex-col">
-      <div id="content-icon"></div>
-      <h2 id="content-title"></h2>
-      <div id="content-text"></div>
-    </div>
+  <!-- Command Panel -->
+  <div id="command-panel" class="flex-col">
+    <!-- Command Input -->
+    <input id="command-input" class="shadow"></input>
+    <!-- Widget -->
+    <div id="widget" class="flex-col"></div>
     <!-- Other projects -->
     <div id="other-projects" class="flex-row">
       <h2>Other projects coming soon</h2>
@@ -83,7 +79,7 @@
 
   <!-- Scripts -->
   <script src="js/clock.js"></script>
-  <script src="js/search.js"></script>
+  <script src="js/commands.js"></script>
 
 </body>
 </html>
