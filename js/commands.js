@@ -9,8 +9,8 @@ function displayCommandInfo(commandList, widgetElement) {
     widgetElement.classList.add('animate__animated')
     widgetElement.classList.add('animate__zoomIn')
 }
-// Execute a command and return the widget element (widgetChild) added if the command corresponds to a widget, otherwise null
-function executeCommand(commands, inputWords, widgetElement) {
+// Preview a command and return the widget element (widgetChild) added if the command corresponds to a widget, otherwise null
+function previewCommand(commands, inputWords, widgetElement) {
     if (inputWords[0] === '') {
         console.log('Displaying command info...')
         displayCommandInfo(Object.values(commands), widgetElement)
@@ -21,6 +21,10 @@ function executeCommand(commands, inputWords, widgetElement) {
         const widgetChild = document.createElement(`${inputWords[0]}-widget`)
         widgetElement.replaceChildren(widgetChild)
         return widgetChild
+    }
+    if (commands[inputWords[0]] !== undefined && commands[inputWords[0]].type === 'website') {
+        widgetElement.textContent = 'press enter to ' + commands[inputWords[0]].description
+        return null
     }
     console.log('Nothing to display...')
     widgetElement.replaceChildren()
@@ -57,6 +61,23 @@ function setWidgetAttributes(commandObj, inputWords, widgetChild) {
         widgetChild.setAttribute(attributeName, commandParams[attributeName])
     }
 }
+// Execute a command
+function executeCommand(commandObj, inputWords, widgetChild) {
+    switch (commandObj.type) {
+        case 'website':
+            let urlToOpen = commandObj.url
+            const commandParams = getCommandParamsAsObj(commandObj, inputWords)
+            console.log(commandParams)
+            for (let paramName in commandParams) {
+                urlToOpen = urlToOpen.replaceAll('$' + paramName, commandParams[paramName])
+            }
+            window.open(urlToOpen)
+            break;
+        case 'widget':
+            // TODO
+            break;
+    }
+}
 
 function initWidgetElement() {
     return document.getElementById('widget')
@@ -68,19 +89,23 @@ function initCommandInput(commands, widgetElement) {
     let inputWords = commandInput.value.split(' ')
     let firstWord = inputWords[0]
     // Execute the command that's typed in when page loads (unless the page is reloaded that's blank, so command info is displayed)
-    let widgetChild = executeCommand(commands, inputWords, widgetElement)
+    let widgetChild = previewCommand(commands, inputWords, widgetElement)
     if (widgetChild !== null) setWidgetAttributes(commands[firstWord], inputWords, widgetChild)
     // Listen to user input and run a function
-    commandInput.addEventListener('input', (_) => {
+    commandInput.addEventListener('input', () => {
         // Get the words the user has typed
         inputWords = commandInput.value.split(' ')
         // If the first word is different than the previous one, update the "firstWord" and "widgetChild" accordingly and execute the command
         if (inputWords[0] !== firstWord) {
             firstWord = inputWords[0]
-            widgetChild = executeCommand(commands, inputWords, widgetElement)
+            widgetChild = previewCommand(commands, inputWords, widgetElement)
         }
         // If the user has inputed a command corresponding to a widget (e.g. notes), then update the widget's parameters
         if (widgetChild !== null) setWidgetAttributes(commands[firstWord], inputWords, widgetChild)
+    })
+    commandInput.addEventListener('keyup', (e) => {
+        if (e.code === 'Enter' && commands[firstWord] !== undefined)
+            executeCommand(commands[firstWord], inputWords, widgetChild)
     })
     // Focus on the command input so user can type immediately on page load, without clicking on it
     commandInput.focus()
