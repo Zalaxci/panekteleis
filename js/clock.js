@@ -3,7 +3,7 @@ tick();
 //Show the clock (+super cool animation)
 var clock = document.getElementById("clock-container");
 clock.classList.add("animate__animated");
-clock.classList.add("animate__zoomIn");
+clock.classList.add("animate__fadeInUp");
 clock.classList.add("flex-row");
 //Clock function (repeats every second)
 function tick() {

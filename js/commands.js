@@ -6,6 +6,8 @@ function displayCommandInfo(commandList, widgetElement) {
         </div>`,
         ''
     )
+    widgetElement.classList.add('animate__animated')
+    widgetElement.classList.add('animate__zoomIn')
 }
 // Execute a command and return the widget element (widgetChild) added if the command corresponds to a widget, otherwise null
 function executeCommand(commands, inputWords, widgetElement) {
