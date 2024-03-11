@@ -33,8 +33,8 @@
         "type": "widget"
     },
     "gif": {
-        "input": "gif $object",
-        "description": "display a gif of $object (e.g. a cat) from tenor within this page",
+        "input": "gif $gif_content",
+        "description": "display a gif of $gif_content (e.g. a cat) from tenor within this page",
         "type": "widget"
     }
 }
