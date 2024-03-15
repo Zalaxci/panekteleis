@@ -1,6 +1,6 @@
 function displayCommandInfo(commandList, widgetElement) {
     widgetElement.innerHTML = commandList.reduce(
-        (htmlString, currObj) => htmlString + `<div>
+        (htmlString, currObj) => htmlString + `<div class="command-desc">
             <p>${currObj.input}</p>
             <small>${currObj.description}</small>
         </div>`,
@@ -8,27 +8,6 @@ function displayCommandInfo(commandList, widgetElement) {
     )
     widgetElement.classList.add('animate__animated')
     widgetElement.classList.add('animate__zoomIn')
-}
-// Preview a command and return the widget element (widgetChild) added if the command corresponds to a widget, otherwise null
-function previewCommand(commands, inputWords, widgetElement) {
-    if (inputWords[0] === '') {
-        console.log('Displaying command info...')
-        displayCommandInfo(Object.values(commands), widgetElement)
-        return null
-    }
-    if (commands[inputWords[0]] !== undefined && commands[inputWords[0]].type === 'widget') {
-        console.log(`Displaying ${inputWords[0]} widget...`)
-        const widgetChild = document.createElement(`${inputWords[0]}-widget`)
-        widgetElement.replaceChildren(widgetChild)
-        return widgetChild
-    }
-    if (commands[inputWords[0]] !== undefined && commands[inputWords[0]].type === 'website') {
-        widgetElement.textContent = 'press enter to ' + commands[inputWords[0]].description
-        return null
-    }
-    console.log('Nothing to display...')
-    widgetElement.replaceChildren()
-    return null
 }
 function getCommandParamsAsObj(commandObj, inputWords) {
     // The commandParams object contains the command parameters the user typed after the command keyword as an object
@@ -61,9 +40,54 @@ function setWidgetAttributes(commandObj, inputWords, widgetChild) {
         widgetChild.setAttribute(attributeName, commandParams[attributeName])
     }
 }
-// Execute a command
+// The most important function in this file - it runs on user input and "previews" the user's command
+// We discern the following 5 cases:
+function previewCommand(commands, inputWords, widgetElement) {
+    // The user has typed none or 1 words, in which case the command info is displayed if not already shown
+    if (inputWords.length === 1 && inputWords[0] === '') {
+        if (widgetElement.querySelectorAll('.command-desc').length === 0) {
+            console.log('Displaying command info...')
+            displayCommandInfo(Object.values(commands), widgetElement)
+        }
+        return null
+    }
+    // The user has typed 2 or more words (or at least 2 or more spaces) but no valid command as the 1st word
+    if (commands[inputWords[0]] === undefined) {
+        console.log('Nothing to display...')
+        widgetElement.replaceChildren()
+        return null
+    }
+    switch (commands[inputWords[0]].type) {
+        // The user has typed a command corresponding to a widget, followed by some parameters, so a widget element is created if necessary and its parameters are set
+        case 'widget':
+            const tagName = `${inputWords[0]}-widget`
+            let widgetChild = widgetElement.querySelector(tagName)
+            if (widgetChild === null) {
+                console.log(`Creating ${tagName} element, since it is not present in the widget container...`)
+                widgetChild = document.createElement(tagName)
+                widgetElement.replaceChildren(widgetChild)
+            }
+            setWidgetAttributes(commands[inputWords[0]], inputWords, widgetChild)
+            break;
+        // The user has typed a command corresponding to a website (probably a search engine), so the description is displayed with the user's parameters placed in it
+        case 'website':
+            let desc = commands[inputWords[0]].description
+            const commandParams = getCommandParamsAsObj(commands[inputWords[0]], inputWords)
+            for (let paramName in commandParams) {
+                desc = desc.replaceAll('$' + paramName, commandParams[paramName])
+            }
+            widgetElement.textContent = 'press enter to ' + desc
+            break;
+        // The user has typed a valid command, but it has no/invalid type in the commands.json
+        default:
+            console.warn(`Warning: ${inputWords[0]} has invalid or no command type (not widget or website)`)
+            widgetElement.replaceChildren()
+    }
+}
+// This function is run on the Enter key, and "executes" the typed command
 function executeCommand(commandObj, inputWords, widgetChild) {
     switch (commandObj.type) {
+        // In the case of a website / search engine, the user parameters are filled into the URL and it's opened in a new tab
         case 'website':
             let urlToOpen = commandObj.url
             const commandParams = getCommandParamsAsObj(commandObj, inputWords)
@@ -73,6 +97,7 @@ function executeCommand(commandObj, inputWords, widgetChild) {
             }
             window.open(urlToOpen)
             break;
+        // In the case of a widget, execute a function that differs per widget type
         case 'widget':
             // TODO
             break;
@@ -83,26 +108,13 @@ function initWidgetElement() {
     return document.getElementById('widget')
 }
 function initCommandInput(commands, widgetElement) {
-    // Store the command input element
     const commandInput = document.getElementById('command-input')
-    // Store words the user has typed
-    let inputWords = commandInput.value.split(' ')
-    let firstWord = inputWords[0]
-    // Execute the command that's typed in when page loads (unless the page is reloaded that's blank, so command info is displayed)
-    let widgetChild = previewCommand(commands, inputWords, widgetElement)
-    if (widgetChild !== null) setWidgetAttributes(commands[firstWord], inputWords, widgetChild)
-    // Listen to user input and run a function
-    commandInput.addEventListener('input', () => {
-        // Get the words the user has typed
-        inputWords = commandInput.value.split(' ')
-        // If the first word is different than the previous one, update the "firstWord" and "widgetChild" accordingly and execute the command
-        if (inputWords[0] !== firstWord) {
-            firstWord = inputWords[0]
-            widgetChild = previewCommand(commands, inputWords, widgetElement)
-        }
-        // If the user has inputed a command corresponding to a widget (e.g. notes), then update the widget's parameters
-        if (widgetChild !== null) setWidgetAttributes(commands[firstWord], inputWords, widgetChild)
-    })
+    previewCommand(commands, commandInput.value.split(' '), widgetElement)
+    commandInput.addEventListener('input', () => previewCommand(
+        commands,
+        commandInput.value.split(' '),
+        widgetElement,
+    ))
     commandInput.addEventListener('keyup', (e) => {
         if (e.code === 'Enter' && commands[firstWord] !== undefined)
             executeCommand(commands[firstWord], inputWords, widgetChild)
