@@ -3,22 +3,35 @@
 <head>
   <title>Cool start page</title>
 	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="flex-row">
+<body class="flex-col with-space-around">
 
-  <!-- Welcome -->
-  <div id="welcome" class="flex-col">
+  <!-- Top Row -->
+  <div class="flex-row with-space-around-children that-wraps">
+    <!-- Header -->
+    <div id="site-header" class="on-left-side animate__animated animate__lightSpeedInLeft">
+      <h4>neko desu</h4>
+      <h2>猫 です</h2>
+    </div>
+
+    <!-- Command Input -->
+    <div id="command-input-container" class="stretched flex-col with-centered-children">
+      <input id="command-input" class="with-shadow animate__animated animate__fadeInDown" style="width: 100%;"/>
+    </div>
+  </div>
+  
+  <!-- Middle Row -->
+  <div class="stretched flex-row with-space-around-children that-wraps-reversely">
     <!-- Bio -->
-    <div id="bio" class="flex-col">
-      <h4 class="animate__animated animate__lightSpeedInLeft" style="margin-bottom: 0;">neko desu</h4>
-      <h2 class="animate__animated animate__lightSpeedInLeft" style="margin-top: 0;"2>猫 です</h2>
+    <div id="bio" class="on-left-side">
       <p class="animate__animated animate__jackInTheBox">
-        = "I am a cat" (lit. cat + politeness particle) in Japanese<br>
+        猫です = "I am a cat" (lit. cat + politeness particle) in Japanese<br>
         this is a hub of cat-themed websites, as well as a personal personal page created by Zalaxci :-)<br>
         it also contains a lot of commands one can use via the search bar on the top right :o<br>
         check out the list of all commands on the right ->
@@ -31,8 +44,15 @@
         I also plan to learn Japanese by watching anime but am too inconsistent to ever succeed in doing so :(
       </p>
     </div>
+    
+    <!-- Widget -->
+    <div id="widget-container" class="stretched flex-col"></div>
+  </div>
+
+  <!-- Bottom Row -->
+  <div class="flex-row with-space-around-children that-wraps">
     <!-- Clock -->
-    <div id="clock-container">
+    <div id="clock-container" class="on-left-side that-wraps">
       <div class="clock-col">
         <p class="clock-label">
           Day
@@ -62,16 +82,9 @@
         </h3>
       </div>
     </div>
-  </div>
 
-  <!-- Command Panel -->
-  <div id="command-panel" class="flex-col">
-    <!-- Command Input -->
-    <input id="command-input" class="shadow animate__animated animate__fadeInDown"></input>
-    <!-- Widget -->
-    <div id="widget" class="flex-col"></div>
     <!-- Other projects -->
-    <div id="other-projects" class="flex-row animate__animated animate__fadeInUp">
+    <div id="other-projects" class="stretched flex-row with-centered-children animate__animated animate__fadeInUp">
       <h2>Other projects coming soon</h2>
     </div>
   </div>

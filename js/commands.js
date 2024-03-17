@@ -65,6 +65,7 @@ function previewCommand(commands, inputWords, widgetElement) {
             if (widgetChild === null) {
                 console.log(`Creating ${tagName} element, since it is not present in the widget container...`)
                 widgetChild = document.createElement(tagName)
+                widgetChild.classList.add('widget')
                 widgetElement.replaceChildren(widgetChild)
             }
             setWidgetAttributes(commands[inputWords[0]], inputWords, widgetChild)
@@ -105,7 +106,7 @@ function executeCommand(commandObj, inputWords, widgetChild) {
 }
 
 function initWidgetElement() {
-    return document.getElementById('widget')
+    return document.getElementById('widget-container')
 }
 function initCommandInput(commands, widgetElement) {
     const commandInput = document.getElementById('command-input')

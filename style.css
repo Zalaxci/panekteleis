@@ -14,12 +14,19 @@
 
 body {
   margin: 0;
-  background-color: rgb(172, 108, 108);
-}
-body > * {
   height: 100vh;
+  background-color: rgb(172, 108, 108);
+  overflow-x: hidden;
 }
 
+/*Every item on the left side of the page has a width of 400px + 8% of the page width for larger screens (e.g. computer, tablet) or 100% of the page width for smaller (e.g. phone) screens*/
+.on-left-side {
+  min-width: min(90vw, calc(8vw + 400px));
+  width: min(90vw, calc(8vw + 400px));
+  max-width: min(90vw, calc(8vw + 400px));
+}
+
+/*Flexbox containers & useful properties like wrap, flex grow*/
 .flex-row {
   display: flex !important;
   flex-direction: row;
@@ -28,53 +35,86 @@ body > * {
   display: flex !important;
   flex-direction: column;
 }
+.stretched {
+  flex-grow: 1;
+}
+.with-centered-children {
+  align-items: center;
+  place-content: center;
+}
+.that-wraps {
+  flex-wrap: wrap;
+}
+.that-wraps-reversely {
+  flex-wrap: wrap-reverse;
+}
 
-.shadow {
+/*Add vertical padding around a flex column or horizontal padding around a flex row with the "with-space-around" class */
+.flex-row.with-space-around {
+  padding: 0 1.5rem;
+}
+.flex-col.with-space-around {
+  padding: 1.5rem 0;
+}
+/*Add vertical margin around children of a flex column or horizontal margin around children of a flex row if the "with-space-around-children" class is present*/
+.flex-row.with-space-around-children > * {
+  margin: 0 1.5rem;
+}
+.flex-column.with-space-around-children > * {
+  margin: 1.5rem 0;
+}
+
+.with-shadow {
   box-shadow: 10px 10px 1px 0px rgba(52,58,69,0.6);
   -webkit-box-shadow: 10px 10px 1px 0px rgba(52,58,69,0.6);
   -moz-box-shadow: 10px 10px 1px 0px rgba(52,58,69,0.6);
 }
 
-/*Welcome section*/
-#welcome {
-  width: min(500px, 100vw);
-  padding: 1.5rem;
+/*Make the 2 children of the header (Japanese & Romanji pronounciation) stick together by removing the margin inbetween*/
+#site-header > *:first-child {
+  margin-top: 0;
+  margin-bottom: 0;
 }
-#bio {
-  flex-grow: 1;
-  justify-content: center;
+#site-header > *:nth-child(2) {
+  margin-top: 0;
 }
+
+/*Increase the font size of the command input box and set a dark grey background color*/
+#command-input {
+  font-size: 1.6rem;
+	background: rgb(52, 58, 60)
+}
+.command-desc {
+  --w: max(
+    calc(85vw - 500px),
+    min(calc(900px - 37vw), 90vw)
+  );
+  width: var(--w);
+  max-width: var(--w);
+}
+/*Because CSS is stupid & is not a aware of the height of elements inside a Web Component, force the widget container as well as the widget inside it if present to have a min height*/
+/*The min height decreases as the page width increases since we want the page not to scroll on tablets / medium sized displays*/
+#widget-container:not(:empty) {
+  --min-h: calc(500px - 18vw);
+  min-height: var(--min-h);
+}
+#widget-container * {
+  align-items: left;
+}
+#widget-container .widget {
+  min-height: max(90%, var(--min-h));
+  height: max(90%, var(--min-h));
+  max-height: max(90%, var(--min-h));
+}
+/*Position & style the clock*/
 #clock-container {
   align-items: center;
   justify-content: space-between;
 
-  /*Don't display until Javascript is loaded, so animations happen at the correct time*/
+  /*Don't display until Javascript is loaded, so that animations happen at the correct time*/
   display: none;
 }
 .clock-timer {
+  /*Change the font to the thicker Press Start 2P*/
   font-family: "Press Start 2P", system-ui, sans-serif;;
-}
-
-/*Widgets section*/
-#command-panel {
-  padding: 1.5rem;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-grow: 1;
-}
-#command-input {
-  /*Size*/
-  width: 95%;
-  font-size: 1.6rem;
-
-  /*Dark grey background*/
-	background: rgb(52, 58, 60)
-}
-#widget {
-  width: 95%;
-  align-items: left;
-}
-#other-projects {
-  align-items: center;
-  place-content: center;
 }
